@@ -1,12 +1,9 @@
-import './App.css'
-
+import Home from "./pages/Home/Home.jsx";
 function App() {
 
   return (
     <>
-      <h1>
-          Hello World!
-      </h1>
+     <Home />
     </>
   )
 }
