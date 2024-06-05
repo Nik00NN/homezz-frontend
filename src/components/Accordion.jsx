@@ -1,11 +1,11 @@
-import { useState } from "react";
+import {useState} from "react";
 import AccordionItem from "./AccordionItem.jsx";
 
-const Accordion = ({ data }) => { // Destructure the data prop
+const Accordion = ({data}) => { // Destructure the data prop
     const [curOpen, setCurOpen] = useState(null);
 
     return (
-        <div className="w-[700px] m-32 flex flex-col gap-6">
+        <div className="w-[800px] m-32 flex flex-col gap-6 ">
             {data.map((element, index) => (
                 <AccordionItem
                     curOpen={curOpen}

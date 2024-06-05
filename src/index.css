@@ -3,6 +3,5 @@
 @tailwind utilities;
 
 html{
-    background-color: #00334d;
-    box-sizing: border-box;
+    background-color: rgb(31 41 55);
 }
