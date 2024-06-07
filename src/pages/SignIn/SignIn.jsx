@@ -6,26 +6,27 @@ import {AuthContext} from "../../context/AuthContext.jsx";
 const SignIn = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [errorMessage,setErrorMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
     const {setIsAuthenticated} = useContext(AuthContext)
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if(!username){
+        if (!username) {
             setErrorMessage('Username cannot be empty!')
             return;
         }
-        if(!password){
+        if (!password) {
             setErrorMessage('Password cannot be empty!')
             return;
         }
         try {
             login(username, password)
             setIsAuthenticated(true);
-            navigate("/all-posts")
-        }catch(error){
+            navigate("/all-posts", {state: {username: username}})
+            localStorage.setItem("username", username)
+        } catch (error) {
             console.log(error)
         }
     }

@@ -7,10 +7,8 @@ const Home = () => {
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-800">
             <nav className="flex items-center justify-evenly gap-16 w-full p-4">
                 <img src="/public/logo4.png" alt="logo" className="w-1/12 mr-auto"/>
-                <button className="text-white font-sans text-xl hover:underline hover:text-teal-200">For Sale</button>
-                <button className="text-white font-sans text-xl hover:underline hover:text-teal-200">For Loan</button>
-
             </nav>
+
             <div className="flex flex-col items-center justify-center min-h-screen bg-gray-800">
                 <div className="flex flex-col items-start justify-center flex-1 max-w-screen-xl px-6">
                     <div className="flex items-start justify-between w-full">
@@ -35,11 +33,15 @@ const Home = () => {
                     </NavLink>
                 </div>
             </div>
+
             <h1 className="text-teal-500 hover:text-teal-600 self-center ml-23 text-6xl font-sans">Get to know us
-                better</h1>
+                better
+            </h1>
+
             <div>
                 <Accordion data={faqs}/>
             </div>
+
         </div>
 
 

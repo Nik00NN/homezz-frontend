@@ -50,7 +50,8 @@ const SignUp = () => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="phonenumber" className="block text-gray-300">Phone Number</label>
+                        <label htmlFor="phonenumber" className="block text-gray-300">Phone Number <span
+                            className="text-sm font-thin text-gray-500">(+40)</span></label>
                         <input
                             type="text"
                             id="phonenumber"
@@ -59,7 +60,8 @@ const SignUp = () => {
                         />
                     </div>
                     <div className="mb-6">
-                        <label htmlFor="profile-picture" className="block text-gray-300 ">Profile Picture <span className="text-gray-500">(Optional)</span></label>
+                        <label htmlFor="profile-picture" className="block text-gray-300 ">Profile Picture <span
+                            className="text-gray-500">(Optional)</span></label>
                         <input
                             type="file"
                             id="profile-picture"
