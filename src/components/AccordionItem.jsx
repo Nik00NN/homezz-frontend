@@ -9,7 +9,7 @@ const AccordionItem = ({ num, title, curOpen, onOpen, children }) => {
     return (
         <div
             onClick={handleToggle}
-            className={`bg-gray-700 text-white p-6 mb-4 rounded-lg shadow-lg transform transition duration-300 ease-in-out cursor-pointer ${isOpen ? "border-l-4 border-teal-400" : ""}`}
+            className={`bg-gray-700 text-white p-6 mb-4 rounded-lg shadow-lg  ease-in-out cursor-pointer transform hover:scale-105 transition duration-300 ${isOpen ? "border-l-4 border-teal-400" : ""}`}
         >
             <div className="flex justify-between items-center">
                 <div className="flex items-center">
