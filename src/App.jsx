@@ -6,6 +6,9 @@ import { useContext } from "react";
 import SignUp from "./pages/SignUp/SignUp.jsx";
 import { AuthContext } from "./context/AuthContext.jsx";
 import UserProfile from "./pages/UserProfile/UserProfile.jsx";
+import FavoritePosts from "./pages/FavoritePosts/FavoritePosts.jsx";
+import PostPage from "./pages/PostPage/PostPage.jsx";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword.jsx";
 
 function App() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -23,7 +26,16 @@ function App() {
           element={isAuthenticated ? <Navigate to="/all-posts" /> : <SignUp />}
         />
         <Route path="/all-posts" element={<Main />} />
-        <Route path="/view-profile" element={<UserProfile />} />
+        <Route
+          path="/view-profile"
+          element={isAuthenticated ? <UserProfile /> : <SignIn />}
+        />
+        <Route
+          path="/view-favorites"
+          element={isAuthenticated ? <FavoritePosts /> : <SignIn />}
+        />
+        <Route path="/haubau" element={<PostPage />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
     </BrowserRouter>
   );

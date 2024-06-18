@@ -38,7 +38,6 @@ const AddPostModal = ({ isOpen, onClose, onSave }) => {
       method: "POST",
       body: formData,
       headers: {
-        // 'Content-Type': 'multipart/form-data', // DO NOT set Content-Type for FormData
         Authorization: `Bearer ${token}`,
       },
     })
@@ -53,7 +52,18 @@ const AddPostModal = ({ isOpen, onClose, onSave }) => {
   };
 
   const handlePhotoChange = (event) => {
-    setPhotos(Array.from(event.target.files));
+    const selectedFiles = Array.from(event.target.files);
+    const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+
+    const validPhotos = selectedFiles.filter((file) =>
+      validImageTypes.includes(file.type)
+    );
+
+    if (validPhotos.length !== selectedFiles.length) {
+      alert("Please upload only image files (jpg, png, gif).");
+    }
+
+    setPhotos(validPhotos);
   };
 
   if (!isOpen) return null;
@@ -146,6 +156,7 @@ const AddPostModal = ({ isOpen, onClose, onSave }) => {
               <input
                 type="file"
                 multiple
+                accept="image/*"
                 onChange={handlePhotoChange}
                 className="w-full p-2 border border-gray-300 rounded focus:outline-none"
               />

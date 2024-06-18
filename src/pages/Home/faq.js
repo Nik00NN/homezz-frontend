@@ -1,17 +1,17 @@
 export const faqs = [
-    {
-        title: "Where are these chairs assembled?",
-        text: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusantium, quaerat temporibus quas dolore provident nisi ut aliquid ratione beatae sequi aspernatur veniam repellendus.",
-        num: 1,
-    },
-    {
-        title: "How long do I have to return my chair?",
-        text: "Pariatur recusandae dignissimos fuga voluptas unde optio nesciunt commodi beatae, explicabo natus.",
-        num: 2,
-    },
-    {
-        title: "Do you ship to countries outside the EU?",
-        text: "Excepturi velit laborum, perspiciatis nemo perferendis reiciendis aliquam possimus dolor sed! Dolore laborum ducimus veritatis facere molestias!",
-        num: 3,
-    },
+  {
+    title: "How can I post a real estate listing?",
+    text: "To post a real estate listing, you need to create an account, fill in the property details, and upload relevant photos. Then, the listing will be reviewed and approved by our team before it becomes visible on the site.",
+    num: 1,
+  },
+  {
+    title: "How long does a listing stay active?",
+    text: "A listing remains active on the site for a period of 30 days. After this period, you can choose to renew the listing to continue promoting your property.",
+    num: 2,
+  },
+  {
+    title: "Can I edit the details of a listing after it has been posted?",
+    text: "Yes, you can edit the details of a listing at any time from your account. The changes will be reviewed by our team before they are updated on the site.",
+    num: 3,
+  },
 ];

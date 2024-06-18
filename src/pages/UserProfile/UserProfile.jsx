@@ -5,6 +5,9 @@ import { NavLink } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../../config";
 import Post from "../../components/Post";
+import { Oval } from "react-loader-spinner";
+import ModalDeletePost from "../../components/ModalDeletePost";
+import { AiOutlineEdit } from "react-icons/ai";
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
@@ -12,6 +15,7 @@ const UserProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editableUser, setEditableUser] = useState(null);
   const [posts, setPosts] = useState([]);
+  const [idPostToDelete, setIdPostToDelete] = useState(null);
   const username = localStorage.getItem("username");
   const token = localStorage.getItem("accessToken");
 
@@ -19,7 +23,6 @@ const UserProfile = () => {
     const fetchProfileImage = async () => {
       if (username) {
         try {
-          const token = localStorage.getItem("accessToken");
           const response = await axios.get(
             `${API_URL}/api/users/${username}/files`,
             {
@@ -42,7 +45,6 @@ const UserProfile = () => {
     const fetchProfile = async () => {
       try {
         const response = await axios.get(`${API_URL}/api/users/${username}`);
-        console.log(token);
         setUser(response.data);
         setEditableUser(response.data);
       } catch (error) {
@@ -64,14 +66,13 @@ const UserProfile = () => {
             },
           }
         );
-        console.log(response.data);
         setPosts(response.data);
       } catch (error) {
-        console.error("eroare: " + error);
+        console.error("Error fetching posts", error);
       }
     };
     fetchPosts();
-  }, []);
+  }, [username, token]);
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);
@@ -81,8 +82,34 @@ const UserProfile = () => {
     console.log("Profile image clicked");
   };
 
+  const handleDeletePost = (postId) => {
+    setIdPostToDelete(postId);
+  };
+
+  const handleCloseDeletePostModal = () => {
+    setIdPostToDelete(null);
+  };
+
+  const handleConfirmDeletePost = async () => {
+    try {
+      await axios.delete(`${API_URL}/api/users/posts/${idPostToDelete}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setPosts(posts.filter((post) => post.id !== idPostToDelete));
+      setIdPostToDelete(null);
+    } catch (error) {
+      console.error("Error deleting post", error);
+    }
+  };
+
   if (!user) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Oval color="#00BFFF" height={80} width={80} />
+      </div>
+    );
   }
 
   return (
@@ -195,15 +222,24 @@ const UserProfile = () => {
         </button>
         <div className="w-full bg-gray-800 p-4 rounded-lg shadow-md">
           <h3 className="text-2xl font-semibold text-teal-500 mb-4">
-            My Posts
+            My Posts {`(${posts.length} / 5)`}
           </h3>
           <div className="space-y-4">
             {posts.length > 0 ? (
               posts.map((post) => (
                 <div
                   key={post.id}
-                  className="bg-gray-700 p-4 rounded-lg shadow-md"
+                  className="bg-gray-700 p-4 rounded-lg shadow-md relative"
                 >
+                  <button className="absolute top-10 right-20 bg-green-600 text-white pb-1 pt-1  pl-2 pr-2 rounded-md ">
+                    <AiOutlineEdit size={28}></AiOutlineEdit>
+                  </button>
+                  <button
+                    onClick={() => handleDeletePost(post.id)}
+                    className="absolute top-10 right-10 bg-red-800 text-white pb-1 pl-3 pr-3 rounded-md text-2xl"
+                  >
+                    X
+                  </button>
                   <Post
                     postId={post.id}
                     title={post.title}
@@ -211,6 +247,9 @@ const UserProfile = () => {
                     type={post.type}
                     constructionYear={post.constructionYear}
                     propertyType={post.propertyType}
+                    price={post.price}
+                    numberOfRooms={post.numberOfRooms}
+                    usefulSurface={post.usefulSurface}
                   />
                 </div>
               ))
@@ -220,6 +259,11 @@ const UserProfile = () => {
           </div>
         </div>
       </div>
+      <ModalDeletePost
+        isOpen={idPostToDelete !== null}
+        onClose={handleCloseDeletePostModal}
+        onDelete={handleConfirmDeletePost}
+      />
     </div>
   );
 };

@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { AiOutlineArrowRight, AiOutlineHeart } from "react-icons/ai";
+import {
+  AiOutlineArrowRight,
+  AiOutlineCloseCircle,
+  AiOutlineHeart,
+} from "react-icons/ai";
 import { Carousel } from "react-responsive-carousel";
 import { NavLink } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import axios from "axios";
+import { API_URL } from "../config";
 
 const truncateTitle = (title, wordLimit) => {
   const words = title.split(" ");
@@ -30,8 +36,10 @@ const Post = ({
   constructionYear,
   type,
   propertyType,
+  username,
 }) => {
   const [images, setImages] = useState([]);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -45,19 +53,64 @@ const Post = ({
         console.error("Error fetching images:", error);
       }
     };
-
     fetchImages();
   }, [postId]);
 
+  useEffect(() => {
+    const fetchIsFavorite = async () => {
+      const token = localStorage.getItem("accessToken");
+      const username = localStorage.getItem("username");
+      const response = await axios.get(
+        `${API_URL}/api/users/${username}/favoritePosts/${postId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      console.log(response.data);
+      setIsFavorite(response.data);
+    };
+    fetchIsFavorite();
+  }, []);
+
+  const handleAddFavorite = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      const response = await axios.post(
+        `${API_URL}/api/users/${username}/add-favorite/${postId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsFavorite(true);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error adding favorite post:", error);
+    }
+  };
+
+  const handleRemoveFavorite = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      const response = await axios.delete(
+        `${API_URL}/api/users/${username}/remove-favorite/${postId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsFavorite(false);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error removing post from favorites", error);
+    }
+  };
+
   return (
     <div className="flex bg-gray-900 shadow-xl rounded-2xl overflow-hidden m-4">
-      <div className="w-1/3 bg-gray-300">
-        <Carousel
-          dynamicHeight={true}
-          showThumbs={false}
-          showIndicators={false}
-          infiniteLoop={true}
-        >
+      <div className="w-1/3 bg-gray-800">
+        <Carousel showThumbs={false} showIndicators={false} infiniteLoop={true}>
           {images.map((base64Image, index) => (
             <div key={index}>
               <img
@@ -105,16 +158,35 @@ const Post = ({
             Property Type:{" "}
             <span className="font-semibold text-gray-300">{propertyType}</span>
           </span>
+          <span className="block text-gray-400">
+            Created By:{" "}
+            <span className="font-semibold text-gray-300 hover:underline hover:cursor-pointer hover:text-gray-400">
+              {username}
+            </span>
+          </span>
         </div>
-        <button className="mt-4 px-2 py-1 bg-transparent border border-gray-500 rounded-md flex items-center justify-center text-gray-500 hover:bg-gray-200 transition duration-300">
-          <AiOutlineHeart size={20} className="mr-1" />
-          Add to Favorites
-        </button>
+        {isFavorite ? (
+          <button
+            onClick={handleRemoveFavorite}
+            className="mt-4 px-2 py-1 bg-transparent border border-gray-500 rounded-md flex items-center justify-center text-gray-500 hover:bg-gray-200 transition duration-300"
+          >
+            <AiOutlineCloseCircle size={20} className="mr-1" />
+            Remove from favorites
+          </button>
+        ) : (
+          <button
+            onClick={handleAddFavorite}
+            className="mt-4 px-2 py-1 bg-transparent border border-gray-500 rounded-md flex items-center justify-center text-gray-500 hover:bg-gray-200 transition duration-300"
+          >
+            <AiOutlineHeart size={20} className="mr-1" />
+            Add to Favorites
+          </button>
+        )}
         <NavLink
           to={`/`}
           className="block mt-4 px-4 py-2 bg-teal-600 text-white rounded-lg shadow-lg hover:bg-teal-700 transition duration-300 text-center"
         >
-          View Details <AiOutlineArrowRight className="inline-block ml-1" />
+          View post <AiOutlineArrowRight className="inline-block ml-1" />
         </NavLink>
       </div>
     </div>

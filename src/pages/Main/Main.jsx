@@ -16,6 +16,7 @@ const Main = () => {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [size] = useState(5);
+  const [sort, setSort] = useState("");
 
   useEffect(() => {
     setUsername(localStorage.getItem("username"));
@@ -34,7 +35,27 @@ const Main = () => {
     };
 
     fetchPosts();
-  }, [page, size]);
+  }, [posts.length, page, size]);
+
+  useEffect(() => {
+    applySort();
+  }, [sort]);
+
+  const applySort = () => {
+    let sortedPosts = [...posts];
+
+    if (sort === "price-asc") {
+      sortedPosts.sort((a, b) => a.price - b.price);
+    } else if (sort === "price-desc") {
+      sortedPosts.sort((a, b) => b.price - a.price);
+    } else if (sort === "year-asc") {
+      sortedPosts.sort((a, b) => a.constructionYear - b.constructionYear);
+    } else if (sort === "year-desc") {
+      sortedPosts.sort((a, b) => b.constructionYear - a.constructionYear);
+    }
+
+    setPosts(sortedPosts);
+  };
 
   const handleAddPost = () => {
     setIsModalOpen(true);
@@ -52,6 +73,10 @@ const Main = () => {
     setPage((prevPage) => Math.max(prevPage - 1, 0));
   };
 
+  const handleSortChange = (value) => {
+    setSort(value);
+  };
+
   return (
     <div className="min-h-screen bg-gray-800">
       <Navbar username={username} />
@@ -63,24 +88,21 @@ const Main = () => {
           {isAuthenticated ? (
             <button
               onClick={handleAddPost}
-              className="flex items-center px-4 py-2 mt-2  font-bold text-white bg-gradient-to-r from-teal-500 to-teal-700 rounded-lg hover:from-teal-600 hover:to-teal-700 transform hover:scale-105 transition duration-300 focus:outline-none"
+              className="flex items-center px-4 py-2 mt-2 font-bold text-white bg-gradient-to-r from-teal-500 to-teal-700 rounded-lg hover:from-teal-600 hover:to-teal-700 transform hover:scale-105 transition duration-300 focus:outline-none"
             >
               <AiOutlinePlus size={20} className="mr-2" />
               Add a new post
             </button>
           ) : (
             <NavLink to="/sign-in">
-              <button className="flex items-center px-4 py-2 mt-2  font-bold text-white bg-gradient-to-r from-teal-500 to-teal-700 rounded-lg hover:from-teal-600 hover:to-teal-700 transform hover:scale-105 transition duration-300 focus:outline-none">
+              <button className="flex items-center px-4 py-2 mt-2 font-bold text-white bg-gradient-to-r from-teal-500 to-teal-700 rounded-lg hover:from-teal-600 hover:to-teal-700 transform hover:scale-105 transition duration-300 focus:outline-none">
                 <AiOutlinePlus size={20} className="mr-2" />
                 Add a new post
               </button>
             </NavLink>
           )}
         </div>
-        <FilterSortBar
-          onSortChange={() => console.log("sort")}
-          onFilterChange={() => console.log("filter")}
-        />
+        <FilterSortBar onSortChange={handleSortChange} />
         {loading ? (
           <p className="text-white">Loading...</p>
         ) : (

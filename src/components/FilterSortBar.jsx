@@ -49,8 +49,10 @@ const FilterSortBar = ({ onSortChange, onFilterChange }) => {
           <option value="">Select</option>
           <option value="price-asc">Price (Low to High)</option>
           <option value="price-desc">Price (High to Low)</option>
-          <option value="year-asc">Year (Oldest to Newest)</option>
-          <option value="year-desc">Year (Newest to Oldest)</option>
+          <option value="year-asc">Construction Year (Oldest to Newest)</option>
+          <option value="year-desc">
+            Construction Year (Newest to Oldest)
+          </option>
         </select>
       </div>
       <div className="flex items-center mb-4 md:mb-0">

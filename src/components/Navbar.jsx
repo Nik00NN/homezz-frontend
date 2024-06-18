@@ -90,7 +90,7 @@ const Navbar = ({ username }) => {
               </li>
             </NavLink>
             {isAuthenticated ? (
-              <NavLink to="/" className="block mb-4">
+              <NavLink to="/view-favorites" className="block mb-4">
                 <li className="p-4 border-b border-gray-400 text-gray-300 rounded-lg hover:bg-gray-400 hover:text-teal-900 transition duration-200">
                   My Favourites
                 </li>
