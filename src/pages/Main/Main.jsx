@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Navbar from "../../components/Navbar.jsx";
 import { AuthContext } from "../../context/AuthContext.jsx";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -17,6 +17,12 @@ const Main = () => {
   const [page, setPage] = useState(0);
   const [size] = useState(5);
   const [sort, setSort] = useState("");
+  const [filters, setFilters] = useState({
+    propertyType: "",
+    numberOfRooms: "",
+    usefulSurface: "",
+    postType: "",
+  });
 
   useEffect(() => {
     setUsername(localStorage.getItem("username"));
@@ -24,38 +30,20 @@ const Main = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
+      setLoading(true);
       try {
-        const data = await getAllPosts(page, size);
+        const data = await getAllPosts(page, size, filters);
+        console.log(filters);
         setPosts(data);
-        setLoading(false);
       } catch (error) {
         console.error(error.message);
+      } finally {
         setLoading(false);
       }
     };
 
     fetchPosts();
-  }, [posts.length, page, size]);
-
-  useEffect(() => {
-    applySort();
-  }, [sort]);
-
-  const applySort = () => {
-    let sortedPosts = [...posts];
-
-    if (sort === "price-asc") {
-      sortedPosts.sort((a, b) => a.price - b.price);
-    } else if (sort === "price-desc") {
-      sortedPosts.sort((a, b) => b.price - a.price);
-    } else if (sort === "year-asc") {
-      sortedPosts.sort((a, b) => a.constructionYear - b.constructionYear);
-    } else if (sort === "year-desc") {
-      sortedPosts.sort((a, b) => b.constructionYear - a.constructionYear);
-    }
-
-    setPosts(sortedPosts);
-  };
+  }, [page, size, filters]);
 
   const handleAddPost = () => {
     setIsModalOpen(true);
@@ -75,6 +63,34 @@ const Main = () => {
 
   const handleSortChange = (value) => {
     setSort(value);
+    applySort(value);
+  };
+
+  const handleFilterChange = (newFilters) => {
+    if (newFilters.numberOfRooms !== "") {
+      newFilters.numberOfRooms = parseInt(newFilters.numberOfRooms);
+    }
+    if (newFilters.usefulSurface !== "") {
+      newFilters.usefulSurface = parseInt(newFilters.usefulSurface);
+    }
+
+    setFilters(newFilters);
+  };
+
+  const applySort = (sortValue) => {
+    let sortedPosts = [...posts];
+
+    if (sortValue === "price-asc") {
+      sortedPosts.sort((a, b) => a.price - b.price);
+    } else if (sortValue === "price-desc") {
+      sortedPosts.sort((a, b) => b.price - a.price);
+    } else if (sortValue === "year-asc") {
+      sortedPosts.sort((a, b) => a.constructionYear - b.constructionYear);
+    } else if (sortValue === "year-desc") {
+      sortedPosts.sort((a, b) => b.constructionYear - a.constructionYear);
+    }
+
+    setPosts(sortedPosts);
   };
 
   return (
@@ -102,13 +118,16 @@ const Main = () => {
             </NavLink>
           )}
         </div>
-        <FilterSortBar onSortChange={handleSortChange} />
+        <FilterSortBar
+          onSortChange={handleSortChange}
+          onFilterChange={handleFilterChange}
+        />
         {loading ? (
           <p className="text-white">Loading...</p>
         ) : (
           <div className="flex flex-col gap-4">
             {posts.map((post) => (
-              <Post postId={post.id} key={post.id} {...post} />
+              <Post key={post.id} postId={post.id} {...post} />
             ))}
           </div>
         )}

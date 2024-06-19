@@ -2,9 +2,9 @@ import React, { useState } from "react";
 
 const FilterSortBar = ({ onSortChange, onFilterChange }) => {
   const [sort, setSort] = useState("");
-  const [filter, setFilter] = useState("");
-  const [rooms, setRooms] = useState("");
-  const [surface, setSurface] = useState("");
+  const [propertyType, setPropertyType] = useState("");
+  const [numberOfRooms, setNumberOfRooms] = useState("");
+  const [usefulSurface, setUsefulSurface] = useState("");
   const [postType, setPostType] = useState("");
 
   const handleSortChange = (e) => {
@@ -13,28 +13,43 @@ const FilterSortBar = ({ onSortChange, onFilterChange }) => {
     onSortChange(value);
   };
 
-  const handleFilterChange = (e) => {
+  const handlePropertyTypeChange = (e) => {
     const value = e.target.value;
-    setFilter(value);
-    onFilterChange(value);
+    setPropertyType(value);
+    onFilterChange({
+      propertyType: value,
+      numberOfRooms,
+      usefulSurface,
+      postType,
+    });
   };
 
   const handleRoomsChange = (e) => {
     const value = e.target.value;
-    setRooms(value);
-    // onRoomsChange(value); // Uncomment and implement this function to handle rooms filter change
+    setNumberOfRooms(value);
+    onFilterChange({
+      propertyType,
+      numberOfRooms: value,
+      usefulSurface,
+      postType,
+    });
   };
 
   const handleSurfaceChange = (e) => {
     const value = e.target.value;
-    setSurface(value);
-    // onSurfaceChange(value); // Uncomment and implement this function to handle surface filter change
+    setUsefulSurface(value);
+    onFilterChange({ propertyType, numberOfRooms, usefulSurface: value, postType });
   };
 
   const handlePostTypeChange = (e) => {
     const value = e.target.value;
     setPostType(value);
-    // onPostTypeChange(value); // Uncomment and implement this function to handle post type filter change
+    onFilterChange({
+      propertyType,
+      numberOfRooms,
+      usefulSurface,
+      postType: value,
+    });
   };
 
   return (
@@ -58,19 +73,19 @@ const FilterSortBar = ({ onSortChange, onFilterChange }) => {
       <div className="flex items-center mb-4 md:mb-0">
         <label className="text-white mr-4">Filter by Type:</label>
         <select
-          value={filter}
-          onChange={handleFilterChange}
+          value={propertyType}
+          onChange={handlePropertyTypeChange}
           className="bg-gray-900 text-white px-3 py-2 rounded-md"
         >
           <option value="">All</option>
-          <option value="Apartment">Apartment</option>
-          <option value="House">House</option>
+          <option value="APARTMENT">Apartment</option>
+          <option value="HOUSE">House</option>
         </select>
       </div>
       <div className="flex items-center mb-4 md:mb-0">
         <label className="text-white mr-4">Rooms:</label>
         <select
-          value={rooms}
+          value={numberOfRooms}
           onChange={handleRoomsChange}
           className="bg-gray-900 text-white px-3 py-2 rounded-md"
         >
@@ -83,7 +98,7 @@ const FilterSortBar = ({ onSortChange, onFilterChange }) => {
       <div className="flex items-center mb-4 md:mb-0">
         <label className="text-white mr-4">Surface:</label>
         <select
-          value={surface}
+          value={usefulSurface}
           onChange={handleSurfaceChange}
           className="bg-gray-900 text-white px-3 py-2 rounded-md"
         >
