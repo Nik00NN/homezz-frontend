@@ -73,8 +73,9 @@ const Post = ({
   const handleAddFavorite = async () => {
     try {
       const token = localStorage.getItem("accessToken");
+      const currentUsername = localStorage.getItem("username");
       const response = await axios.post(
-        `${API_URL}/api/users/${username}/add-favorite/${postId}`,
+        `${API_URL}/api/users/${currentUsername}/add-favorite/${postId}`,
         {},
         {
           headers: {
@@ -82,6 +83,7 @@ const Post = ({
           },
         }
       );
+      console.log(username);
       setIsFavorite(true);
       console.log(response.data);
     } catch (error) {
@@ -92,8 +94,9 @@ const Post = ({
   const handleRemoveFavorite = async () => {
     try {
       const token = localStorage.getItem("accessToken");
+      const currentUsername = localStorage.getItem("username");
       const response = await axios.delete(
-        `${API_URL}/api/users/${username}/remove-favorite/${postId}`,
+        `${API_URL}/api/users/${currentUsername}/remove-favorite/${postId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -160,9 +163,11 @@ const Post = ({
           </span>
           <span className="block text-gray-400">
             Created By:{" "}
-            <span className="font-semibold text-gray-300 hover:underline hover:cursor-pointer hover:text-gray-400">
-              {username}
-            </span>
+            <NavLink to={`${username}/view-profile`}>
+              <span className="font-semibold text-gray-300 hover:underline hover:cursor-pointer hover:text-gray-400">
+                {username}
+              </span>
+            </NavLink>
           </span>
         </div>
         {isFavorite ? (
@@ -183,7 +188,7 @@ const Post = ({
           </button>
         )}
         <NavLink
-          to={`/`}
+          to={`${postId}/view-post`}
           className="block mt-4 px-4 py-2 bg-teal-600 text-white rounded-lg shadow-lg hover:bg-teal-700 transition duration-300 text-center"
         >
           View post <AiOutlineArrowRight className="inline-block ml-1" />

@@ -24,6 +24,7 @@ const FavoritePosts = () => {
           }
         );
         setFavoritePosts(response.data);
+        console.log(response.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching favorite posts:", error);
@@ -32,7 +33,7 @@ const FavoritePosts = () => {
     };
 
     fetchFavoritePosts();
-  }, []);
+  }, [token]);
 
   return (
     <div className="min-h-screen bg-gray-800">
