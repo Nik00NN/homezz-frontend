@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { register } from "../../services/authenticationService";
+import Toast from "../../components/Toast";
 
 const SignUp = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -10,12 +11,13 @@ const SignUp = () => {
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [file, setFile] = useState();
+  const [toastVisible, setToastVisible] = useState(false);
 
   const handleProfilePhotoChange = (e) => {
     setFile(e.target.files[0]);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!username) {
@@ -30,6 +32,7 @@ const SignUp = () => {
 
     if (password.length < 8) {
       setErrorMessage("Password must have 8 characters minimum");
+      return;
     }
 
     if (!confirmPassword) {
@@ -62,11 +65,25 @@ const SignUp = () => {
       return;
     }
 
-    register(username, password, emailAddress, address, phoneNumber, file);
+    try {
+      await register(
+        username,
+        password,
+        emailAddress,
+        address,
+        phoneNumber,
+        file
+      );
+      setToastVisible(true);
+      setTimeout(() => setToastVisible(false), 3000);
+      setErrorMessage("");
+    } catch (error) {
+      setErrorMessage("Registration failed. Please try again.");
+    }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen ">
+    <div className="flex items-center justify-center min-h-screen">
       <div className="bg-gray-900 p-8 rounded-lg shadow-2xl w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center text-teal-600">
           Register
@@ -138,7 +155,7 @@ const SignUp = () => {
               <span className="text-sm font-thin text-gray-500"> (+40) </span>
             </label>
             <input
-              type="text"
+              type="              text"
               id="phonenumber"
               onChange={(e) => setPhoneNumber(e.target.value)}
               name="phonenumber"
@@ -146,7 +163,7 @@ const SignUp = () => {
             />
           </div>
           <div className="mb-6">
-            <label htmlFor="profile-picture" className="block text-gray-300 ">
+            <label htmlFor="profile-picture" className="block text-gray-300">
               Profile Picture <span className="text-gray-500">(Optional)</span>
             </label>
             <input
@@ -154,18 +171,23 @@ const SignUp = () => {
               id="profile-picture"
               name="profile-picture"
               onChange={handleProfilePhotoChange}
-              className=" mt-1 block w-full text-gray-700 file:bg-teal-50 file:rounded-full file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:text-teal-700 hover:file:bg-teal-100 "
+              className="mt-1 block w-full text-gray-700 file:bg-teal-50 file:rounded-full file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:text-teal-700 hover:file:bg-teal-100"
             />
           </div>
           <p className="text-sm font-thin text-red-500">{errorMessage}</p>
           <button
             type="submit"
-            className="w-full text-lg py-2 px-4 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-75 "
+            className="w-full text-lg py-2 px-4 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-75"
           >
             Register
           </button>
         </form>
       </div>
+      <Toast
+        message="Registration successful!"
+        visible={toastVisible}
+        onClose={() => setToastVisible(false)}
+      />
     </div>
   );
 };

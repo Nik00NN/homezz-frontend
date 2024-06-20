@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaUser } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 import { IoArrowBackCircle } from "react-icons/io5";
 import { Carousel } from "react-responsive-carousel";
 import { NavLink, useParams } from "react-router-dom";
@@ -10,7 +10,6 @@ import { API_URL } from "../../config";
 const PostPage = () => {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
-  const [userProfileImage, setUserProfileImage] = useState(null);
   const token = localStorage.getItem("accessToken");
   const username = localStorage.getItem("username");
 
@@ -56,56 +55,35 @@ const PostPage = () => {
           className="absolute top-4 left-4 text-white hover:text-teal-400 cursor-pointer transform hover:scale-105 transition duration-300 focus:outline-none"
         />
       </NavLink>
-      <div className="flex flex-col md:flex-row items-start justify-between w-full max-w-screen-xl bg-gray-900 p-8 rounded-xl shadow-lg mt-8">
-        <div className="flex flex-col items-start w-full md:w-3/5">
-          <div className="flex items-center mb-4">
-            <div className="w-16 h-16 rounded-full overflow-hidden">
-              {userProfileImage ? (
-                <img
-                  src={`data:image/jpeg;base64,${userProfileImage}`}
-                  alt="User Profile"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <FaUser size={64} className="text-teal-300" />
-              )}
-            </div>
-            <div className="ml-4">
-              <h2 className="text-xl text-teal-300 font-bold">
-                {post.username}
-              </h2>
-              <p className="text-sm text-gray-400">
-                Posted on:{"  "}
-                {post.creationDate[0]}/{post.creationDate[1]}/
-                {post.creationDate[2]}{" "}
-              </p>
-            </div>
+      <div className="flex flex-col items-start w-full max-w-screen-xl bg-gray-900 p-8 rounded-xl shadow-lg mt-8">
+        <div className="flex items-center mb-4">
+          <div className="w-16 h-16 rounded-full overflow-hidden"></div>
+          <div className="ml-4">
+            <h2 className="text-xl text-teal-300 font-bold">{post.username}</h2>
           </div>
-          <h1 className="text-4xl text-teal-500 font-serif font-bold mb-6">
-            {post.title}
-          </h1>
-          <p className="text-lg text-white mb-4">{post.description}</p>
-          <p className="text-lg text-white mb-2">Price: ${post.price}</p>
-          <p className="text-lg text-white mb-2">Rooms: {post.numberOfRooms}</p>
-          <p className="text-lg text-white mb-2">
-            Surface: {post.usefulSurface} sqm
-          </p>
-          <p className="text-lg text-white mb-2">
-            Year: {post.constructionYear}
-          </p>
-          <p className="text-lg text-white mb-2">
-            Type: {post.type.replace("_", " ")}
-          </p>
-          <p className="text-lg text-white mb-2">
-            Property Type: {post.propertyType}
-          </p>
         </div>
-        <div className="w-full md:w-2/5 bg-gray-900">
-          <Carousel
-            showThumbs={false}
-            showIndicators={false}
-            infiniteLoop={true}
-          >
+        <h1 className="text-5xl text-teal-500 font-serif font-bold mb-1">
+          {post.title}
+        </h1>
+        <p className="text-sm text-gray-400 mb-5">
+          Posted on: {post.creationDate[0]}/{post.creationDate[1]}/
+          {post.creationDate[2]}
+        </p>
+        <p className="text-lg text-white mb-4">{post.description}</p>
+        <p className="text-lg text-white mb-2">Price: ${post.price}</p>
+        <p className="text-lg text-white mb-2">Rooms: {post.numberOfRooms}</p>
+        <p className="text-lg text-white mb-2">
+          Surface: {post.usefulSurface} sqm
+        </p>
+        <p className="text-lg text-white mb-2">Year: {post.constructionYear}</p>
+        <p className="text-lg text-white mb-2">
+          Type: {post.type.replace("_", " ")}
+        </p>
+        <p className="text-lg text-white mb-2">
+          Property Type: {post.propertyType}
+        </p>
+        <div className="flex justify-center w-full mt-8">
+          <Carousel showThumbs={false} infiniteLoop={true} width={800}>
             {post.photos.map((photo, index) => (
               <img
                 key={index}

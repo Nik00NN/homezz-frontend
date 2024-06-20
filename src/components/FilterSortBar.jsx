@@ -38,7 +38,12 @@ const FilterSortBar = ({ onSortChange, onFilterChange }) => {
   const handleSurfaceChange = (e) => {
     const value = e.target.value;
     setUsefulSurface(value);
-    onFilterChange({ propertyType, numberOfRooms, usefulSurface: value, postType });
+    onFilterChange({
+      propertyType,
+      numberOfRooms,
+      usefulSurface: value,
+      postType,
+    });
   };
 
   const handlePostTypeChange = (e) => {
@@ -64,13 +69,9 @@ const FilterSortBar = ({ onSortChange, onFilterChange }) => {
           <option value="">Select</option>
           <option value="price-asc">Price (Low to High)</option>
           <option value="price-desc">Price (High to Low)</option>
-          <option value="year-asc">Construction Year (Oldest to Newest)</option>
-          <option value="year-desc">
-            Construction Year (Newest to Oldest)
-          </option>
         </select>
       </div>
-      <div className="flex items-center mb-4 md:mb-0">
+      <div className="flex items-center mb-4 md:mb-0 ml-2">
         <label className="text-white mr-4">Filter by Type:</label>
         <select
           value={propertyType}
@@ -82,7 +83,7 @@ const FilterSortBar = ({ onSortChange, onFilterChange }) => {
           <option value="HOUSE">House</option>
         </select>
       </div>
-      <div className="flex items-center mb-4 md:mb-0">
+      <div className="flex items-center mb-4 md:mb-0 ml-2">
         <label className="text-white mr-4">Rooms:</label>
         <select
           value={numberOfRooms}

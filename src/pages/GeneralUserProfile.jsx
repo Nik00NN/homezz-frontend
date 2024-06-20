@@ -74,7 +74,7 @@ const GeneralUserProfile = () => {
             <img
               src={profileImage}
               alt="Profile"
-              className="w-40 h-40 rounded-full object-cover"
+              className="w-50 h-40 rounded-full object-cover mt-5"
             />
           ) : (
             <div className="w-40 h-40 bg-gray-300 rounded-full flex items-center justify-center">
@@ -83,12 +83,18 @@ const GeneralUserProfile = () => {
           )}
         </div>
         <h2 className="text-3xl font-bold">{user.username}</h2>
-        <p className="text-xl">Email: {user.emailAddress}</p>
-        <p className="text-xl">Phone: {user.phoneNumber}</p>
-        <p className="text-xl">Address: {user.address}</p>
+        <p className="text-xl text-teal-500">
+          Email: <span className="text-white">{user.emailAddress}</span>
+        </p>
+        <p className="text-xl text-teal-500">
+          Phone: <span className="text-white">{user.phoneNumber}</span>
+        </p>
+        <p className="text-xl text-teal-500">
+          Address:<span className="text-white"> {user.address}</span>
+        </p>
       </div>
-      <div className="w-full max-w-screen-lg bg-gray-800 p-6 rounded-lg shadow-md">
-        <h3 className="text-2xl font-semibold text-teal-500 mb-4">
+      <div className="w-full max-w-screen-lg bg-gray-700 p-6 rounded-lg shadow-md mt-4">
+        <h3 className="text-3xl font-semibold text-teal-500 mb-4">
           User Posts
         </h3>
         {posts.length > 0 ? (
@@ -105,7 +111,6 @@ const GeneralUserProfile = () => {
                 constructionYear={post.constructionYear}
                 type={post.type}
                 propertyType={post.propertyType}
-                username={username}
               />
             ))}
           </div>

@@ -42,6 +42,14 @@ function App() {
           path="/all-posts/:username/view-profile"
           element={<GeneralUserProfile />}
         />
+        <Route
+          path="/view-favorites/:postId/view-post"
+          element={<PostPage />}
+        />
+        <Route
+          path="/all-posts/:username/view-profile/:postId/view-post"
+          element={<PostPage />}
+        />
       </Routes>
     </BrowserRouter>
   );

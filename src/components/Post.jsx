@@ -40,6 +40,7 @@ const Post = ({
 }) => {
   const [images, setImages] = useState([]);
   const [isFavorite, setIsFavorite] = useState(false);
+  const currentUsername = localStorage.getItem("username");
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -163,17 +164,23 @@ const Post = ({
           </span>
           <span className="block text-gray-400">
             Created By:{" "}
-            <NavLink to={`${username}/view-profile`}>
-              <span className="font-semibold text-gray-300 hover:underline hover:cursor-pointer hover:text-gray-400">
-                {username}
-              </span>
-            </NavLink>
+            {username === currentUsername ? (
+              <span>{username}</span>
+            ) : (
+              <NavLink to={`${username}/view-profile`}>
+                <span className="font-semibold text-gray-300 hover:underline hover:cursor-pointer hover:text-gray-400">
+                  {username}
+                </span>
+              </NavLink>
+            )}
           </span>
         </div>
         {isFavorite ? (
           <button
             onClick={handleRemoveFavorite}
-            className="mt-4 px-2 py-1 bg-transparent border border-gray-500 rounded-md flex items-center justify-center text-gray-500 hover:bg-gray-200 transition duration-300"
+            className={
+              "mt-4 px-2 py-1 bg-transparent border border-gray-500 rounded-md flex items-center justify-center text-gray-500 hover:bg-gray-200 transition duration-300 "
+            }
           >
             <AiOutlineCloseCircle size={20} className="mr-1" />
             Remove from favorites
@@ -181,7 +188,8 @@ const Post = ({
         ) : (
           <button
             onClick={handleAddFavorite}
-            className="mt-4 px-2 py-1 bg-transparent border border-gray-500 rounded-md flex items-center justify-center text-gray-500 hover:bg-gray-200 transition duration-300"
+            disabled={username === currentUsername}
+            className="mt-4 px-2 py-1 bg-transparent border border-gray-500 rounded-md flex items-center justify-center text-gray-500 hover:bg-gray-200 transition duration-300 disabled:cursor-not-allowed"
           >
             <AiOutlineHeart size={20} className="mr-1" />
             Add to Favorites

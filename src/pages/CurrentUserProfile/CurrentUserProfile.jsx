@@ -328,6 +328,7 @@ const CurrentUserProfile = () => {
                     price={post.price}
                     numberOfRooms={post.numberOfRooms}
                     usefulSurface={post.usefulSurface}
+                    username={username}
                   />
                 </div>
               ))
