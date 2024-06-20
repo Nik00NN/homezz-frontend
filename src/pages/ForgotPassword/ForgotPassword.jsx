@@ -10,7 +10,7 @@ const ForgotPassword = () => {
       setErrorMessage("Email cannot be empty!");
       return;
     }
-    // Aici adaugă logica pentru trimiterea cererii de resetare a parolei
+
     console.log("Password reset request sent to:", email);
   };
 
@@ -20,7 +20,9 @@ const ForgotPassword = () => {
         <h2 className="text-4xl font-bold mb-6 text-center text-teal-600">
           Forgot Password
         </h2>
-        <span className="text-gray-400 mb-">Enter your email below and we'll send it to you asap</span>
+        <span className="text-gray-400 mb-">
+          Enter your email below and we'll send it to you asap
+        </span>
         <form onSubmit={handleSubmit}>
           <div className="mb-4 mt-4">
             <label htmlFor="email" className="block text-gray-300">

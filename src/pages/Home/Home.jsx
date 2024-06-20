@@ -1,12 +1,11 @@
 import { faqs } from "./faq.js";
 import Accordion from "../../components/Accordion.jsx";
 import { NavLink } from "react-router-dom";
-import { FaUser } from "react-icons/fa";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext.jsx";
 
 const Home = () => {
-  const { isAuthenticated } = useContext(AuthContext);
+  useContext(AuthContext);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-full bg-gray-800">

@@ -75,6 +75,9 @@ const Post = ({
     try {
       const token = localStorage.getItem("accessToken");
       const currentUsername = localStorage.getItem("username");
+      if (currentUsername === null) {
+        return;
+      }
       const response = await axios.post(
         `${API_URL}/api/users/${currentUsername}/add-favorite/${postId}`,
         {},
@@ -167,7 +170,13 @@ const Post = ({
             {username === currentUsername ? (
               <span>{username}</span>
             ) : (
-              <NavLink to={`${username}/view-profile`}>
+              <NavLink
+                to={
+                  currentUsername === null
+                    ? "/sign-in"
+                    : `${username}/view-profile`
+                }
+              >
                 <span className="font-semibold text-gray-300 hover:underline hover:cursor-pointer hover:text-gray-400">
                   {username}
                 </span>
@@ -196,7 +205,7 @@ const Post = ({
           </button>
         )}
         <NavLink
-          to={`${postId}/view-post`}
+          to={currentUsername === null ? "/sign-in" : `${postId}/view-post`}
           className="block mt-4 px-4 py-2 bg-teal-600 text-white rounded-lg shadow-lg hover:bg-teal-700 transition duration-300 text-center"
         >
           View post <AiOutlineArrowRight className="inline-block ml-1" />
