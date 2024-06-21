@@ -8,6 +8,7 @@ import Post from "../../components/Post";
 import { Oval } from "react-loader-spinner";
 import ModalDeletePost from "../../components/ModalDeletePost";
 import { AiOutlineEdit } from "react-icons/ai";
+import ModalEditPost from "../../components/ModalEditPost";
 
 const CurrentUserProfile = () => {
   const [user, setUser] = useState(null);
@@ -16,6 +17,7 @@ const CurrentUserProfile = () => {
   const [editableUser, setEditableUser] = useState(null);
   const [posts, setPosts] = useState([]);
   const [idPostToDelete, setIdPostToDelete] = useState(null);
+  const [idPostToEdit, setIdPostToEdit] = useState(null);
   const [errors, setErrors] = useState({});
   const username = localStorage.getItem("username");
   const token = localStorage.getItem("accessToken");
@@ -118,6 +120,14 @@ const CurrentUserProfile = () => {
       }
     }
     setIsEditing(!isEditing);
+  };
+
+  const handleEditPostClick = (postId) => {
+    setIdPostToEdit(postId);
+  };
+
+  const handleCloseEditPostModal = () => {
+    setIdPostToEdit(null);
   };
 
   const handleProfileImageClick = () => {
@@ -309,7 +319,10 @@ const CurrentUserProfile = () => {
                   key={post.id}
                   className="bg-gray-700 p-4 rounded-lg shadow-md relative"
                 >
-                  <button className="absolute top-10 right-20 bg-green-600 text-white pb-1 pt-1 pl-2 pr-2 rounded-md ">
+                  <button
+                    onClick={() => handleEditPostClick(post.id)}
+                    className="absolute top-10 right-20 bg-green-600 text-white pb-1 pt-1 pl-2 pr-2 rounded-md "
+                  >
                     <AiOutlineEdit size={28}></AiOutlineEdit>
                   </button>
                   <button
@@ -342,6 +355,11 @@ const CurrentUserProfile = () => {
         isOpen={idPostToDelete !== null}
         onClose={handleCloseDeletePostModal}
         onDelete={handleConfirmDeletePost}
+      />
+      <ModalEditPost
+        isOpen={idPostToEdit !== null}
+        postId={idPostToEdit}
+        onClose={handleCloseEditPostModal}
       />
     </div>
   );
