@@ -88,6 +88,8 @@ const CurrentUserProfile = () => {
       newErrors.phoneNumber = "Phone number cannot be empty.";
     } else if (editableUser.phoneNumber.length > 10) {
       newErrors.phoneNumber = "Phone number cannot be more than 10 digits.";
+    } else if (editableUser.phoneNumber.length < 10) {
+      newErrors.phoneNumber = "Phone number cannot contain less than 10 digits";
     }
     if (!editableUser.address) {
       newErrors.address = "Address cannot be empty.";
@@ -114,12 +116,16 @@ const CurrentUserProfile = () => {
             }
           );
           setUser(editableUser);
+          setIsEditing(false);
         } catch (error) {
           console.error("Error updating profile", error);
         }
+      } else {
+        return;
       }
+    } else {
+      setIsEditing(true);
     }
-    setIsEditing(!isEditing);
   };
 
   const handleEditPostClick = (postId) => {

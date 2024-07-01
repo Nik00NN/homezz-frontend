@@ -12,6 +12,18 @@ const AddPostModal = ({ isOpen, onClose, onSave }) => {
   const [propertyType, setPropertyType] = useState("APARTMENT");
   const [photos, setPhotos] = useState([]);
 
+  const isFormValid = () => {
+    return (
+      title.trim() !== "" &&
+      description.trim() !== "" &&
+      price.trim() !== "" &&
+      numberOfRooms.trim() !== "" &&
+      usefulSurface.trim() !== "" &&
+      constructionYear.trim() !== "" &&
+      photos.length > 0
+    );
+  };
+
   const handleSave = () => {
     const newPost = {
       title,
@@ -174,6 +186,7 @@ const AddPostModal = ({ isOpen, onClose, onSave }) => {
               type="button"
               className="px-4 py-2 bg-teal-500 text-white rounded-lg"
               onClick={handleSave}
+              disabled={!isFormValid()}
             >
               Save
             </button>

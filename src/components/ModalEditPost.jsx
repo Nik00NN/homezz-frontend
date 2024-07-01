@@ -24,7 +24,6 @@ const ModalEditPost = ({ isOpen, onClose, onSave, postId }) => {
               Authorization: `Bearer ${token}`,
             },
           });
-          console.log(response.data);
           setNumberOfRooms(response.data.numberOfRooms);
           setPostTitle(response.data.title);
           setPostDescription(response.data.description);

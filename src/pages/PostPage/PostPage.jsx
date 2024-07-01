@@ -11,7 +11,6 @@ const PostPage = () => {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
   const token = localStorage.getItem("accessToken");
-  const username = localStorage.getItem("username");
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -20,17 +19,6 @@ const PostPage = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         setPost(response.data);
-        console.log(response.data.username);
-
-        // Fetch user profile image
-        const profileResponse = await axios.get(
-          `${API_URL}/api/users/${username}/files`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        setUserProfileImage(profileResponse.data);
-        console.log(profileResponse.data);
       } catch (error) {
         console.error("Error fetching post:", error);
       }
@@ -58,9 +46,6 @@ const PostPage = () => {
       <div className="flex flex-col items-start w-full max-w-screen-xl bg-gray-900 p-8 rounded-xl shadow-lg mt-8">
         <div className="flex items-center mb-4">
           <div className="w-16 h-16 rounded-full overflow-hidden"></div>
-          <div className="ml-4">
-            <h2 className="text-xl text-teal-300 font-bold">{post.username}</h2>
-          </div>
         </div>
         <h1 className="text-5xl text-teal-500 font-serif font-bold mb-1">
           {post.title}
@@ -69,18 +54,42 @@ const PostPage = () => {
           Posted on: {post.creationDate[0]}/{post.creationDate[1]}/
           {post.creationDate[2]}
         </p>
-        <p className="text-lg text-white mb-4">{post.description}</p>
-        <p className="text-lg text-white mb-2">Price: ${post.price}</p>
-        <p className="text-lg text-white mb-2">Rooms: {post.numberOfRooms}</p>
-        <p className="text-lg text-white mb-2">
-          Surface: {post.usefulSurface} sqm
+        <p className="text-xl text-teal-300 font-bold mb-4 font-sans">
+          {post.description}
         </p>
-        <p className="text-lg text-white mb-2">Year: {post.constructionYear}</p>
-        <p className="text-lg text-white mb-2">
-          Type: {post.type.replace("_", " ")}
+        <p className="text-xl text-teal-400 font-extrabold font-sans mb-2">
+          Price:
+          <span className="text-white font-medium text-lg"> {post.price}$</span>
         </p>
-        <p className="text-lg text-white mb-2">
-          Property Type: {post.propertyType}
+        <p className="text-xl text-teal-400 font-extrabold font-sans mb-2">
+          Rooms:{" "}
+          <span className="text-white font-medium text-lg">
+            {post.numberOfRooms}
+          </span>
+        </p>
+        <p className="text-xl text-teal-400 font-extrabold font-sans mb-2">
+          Surface:{" "}
+          <span className="text-white font-medium text-lg">
+            {post.usefulSurface} sqm{" "}
+          </span>
+        </p>
+        <p className="text-xl text-teal-400 font-extrabold font-sans mb-2">
+          Year:{" "}
+          <span className="text-white font-medium text-lg">
+            {post.constructionYear}{" "}
+          </span>
+        </p>
+        <p className="text-xl text-teal-400 font-extrabold font-sans mb-2">
+          Type:{" "}
+          <span className="text-white font-medium text-lg">
+            {post.type.replace("_", " ")}{" "}
+          </span>
+        </p>
+        <p className="text-xl text-teal-400 font-extrabold font-sans mb-2">
+          Property Type:{" "}
+          <span className="text-white font-medium text-lg">
+            {post.propertyType}{" "}
+          </span>
         </p>
         <div className="flex justify-center w-full mt-8">
           <Carousel showThumbs={false} infiniteLoop={true} width={800}>

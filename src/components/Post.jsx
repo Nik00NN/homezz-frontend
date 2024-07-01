@@ -116,14 +116,14 @@ const Post = ({
 
   return (
     <div className="flex bg-gray-900 shadow-xl rounded-2xl overflow-hidden m-4">
-      <div className="w-1/3 bg-gray-800">
+      <div className=" bg-gray-800 h-[100%] w-[100%]">
         <Carousel showThumbs={false} showIndicators={false} infiniteLoop={true}>
           {images.map((base64Image, index) => (
             <div key={index}>
               <img
                 src={`data:image/jpeg;base64,${base64Image}`}
                 alt={`Property ${index + 1}`}
-                className="object-cover h-full w-full"
+                className="object-fill h-full w-full "
               />
             </div>
           ))}
