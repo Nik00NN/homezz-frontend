@@ -49,6 +49,7 @@ const ModalEditPost = ({ isOpen, onClose, onSave, postId }) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImages([...images, reader.result]);
+        console.log(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -96,7 +97,11 @@ const ModalEditPost = ({ isOpen, onClose, onSave, postId }) => {
             {images.map((image, index) => (
               <div key={index} className="relative w-24 h-24 mb-4 mr-4">
                 <img
-                  src={`data:image/jpeg;base64,${image.fileContent}`}
+                  src={
+                    typeof image === "string"
+                      ? image
+                      : `data:image/jpeg;base64,${image.fileContent}`
+                  }
                   alt={`Image ${index + 1}`}
                   className="w-full h-full object-cover rounded-md"
                 />

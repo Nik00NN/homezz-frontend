@@ -36,7 +36,7 @@ const PostPage = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center max-h-screen w-full bg-gray-800">
+    <div className="flex flex-col items-center justify-center max-h-fit max-w-full bg-gray-800">
       <NavLink to="/all-posts">
         <IoArrowBackCircle
           size={50}
@@ -92,7 +92,7 @@ const PostPage = () => {
           </span>
         </p>
         <div className="flex justify-center w-full mt-8">
-          <Carousel showThumbs={false} infiniteLoop={true} width={800}>
+          <Carousel showThumbs={false} infiniteLoop={true} width={1100}>
             {post.photos.map((photo, index) => (
               <img
                 key={index}

@@ -44,6 +44,7 @@ const AddPostModal = ({ isOpen, onClose, onSave }) => {
     );
     photos.forEach((photo, index) => {
       formData.append("postPhotos", photo);
+      console.log(photo);
     });
 
     fetch(`${API_URL}/api/users/${username}/posts`, {

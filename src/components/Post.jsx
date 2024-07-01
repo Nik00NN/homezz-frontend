@@ -130,8 +130,8 @@ const Post = ({
         </Carousel>
       </div>
       <div className="w-2/3 p-6">
-        <h2 className="text-3xl font-bold text-teal-600">
-          {truncateTitle(title, 6)}
+        <h2 className="text-2xl font-bold text-teal-600">
+          {truncateTitle(title, 3)}
         </h2>
         <p className="text-gray-300">{truncateDescription(description, 12)}</p>
         <div className="mt-4">
