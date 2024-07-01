@@ -5,12 +5,14 @@ import { AuthContext } from "../context/AuthContext.jsx";
 import MembershipModal from "./MembershipModal";
 import { API_URL } from "../config.js";
 import axios from "axios";
+import Toast from "./Toast"; // Import the Toast component
 
 const Navbar = ({ username }) => {
   const [showNav, setShowNav] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  const [toastVisible, setToastVisible] = useState(false); // State for Toast visibility
 
   const handleShowNav = () => {
     setShowNav(!showNav);
@@ -27,6 +29,7 @@ const Navbar = ({ username }) => {
   const handleLogout = () => {
     localStorage.clear();
     setIsAuthenticated(false);
+    setToastVisible(true); // Show Toast on logout
   };
 
   useEffect(() => {
@@ -144,6 +147,11 @@ const Navbar = ({ username }) => {
         </div>
         {isModalOpen && <MembershipModal onClose={handleCloseModal} />}
       </div>
+      <Toast
+        message="You have successfully logged out!"
+        visible={toastVisible}
+        onClose={() => setToastVisible(false)}
+      />
     </div>
   );
 };

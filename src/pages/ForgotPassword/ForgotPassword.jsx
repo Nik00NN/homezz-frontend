@@ -21,7 +21,7 @@ const ForgotPassword = () => {
           Forgot Password
         </h2>
         <span className="text-gray-400 mb-">
-          Enter your email below and we'll send it to you asap
+          Enter your email below and we'll send your password.
         </span>
         <form onSubmit={handleSubmit}>
           <div className="mb-4 mt-4">

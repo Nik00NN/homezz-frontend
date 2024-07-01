@@ -1,11 +1,12 @@
 import { faqs } from "./faq.js";
 import Accordion from "../../components/Accordion.jsx";
 import { NavLink } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext.jsx";
 
 const Home = () => {
-  useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext);
+  const username = localStorage.getItem("username");
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-full bg-gray-800">
@@ -20,6 +21,13 @@ const Home = () => {
             Home<span className="text-teal-400">ZZ.ro</span>
           </h1>
         </div>
+        {isAuthenticated ? (
+          <h1 className="text-xl font-medium  text-teal-400 justify-center ml-auto ">
+            Welcome,{username}!
+          </h1>
+        ) : (
+          ""
+        )}
       </nav>
 
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-800">
