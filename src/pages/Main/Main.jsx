@@ -127,7 +127,7 @@ const Main = () => {
         ) : (
           <div className="flex flex-col gap-4">
             {posts.map((post) => (
-              <Post key={post.id} postId={post.id} {...post} />
+              <Post key={post.id} postId={post.id} isAModalOpen={isModalOpen} {...post} />
             ))}
           </div>
         )}

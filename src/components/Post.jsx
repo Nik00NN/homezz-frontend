@@ -37,6 +37,7 @@ const Post = ({
   type,
   propertyType,
   username,
+  isAModalOpen,
 }) => {
   const [images, setImages] = useState([]);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -113,6 +114,10 @@ const Post = ({
       console.error("Error removing post from favorites", error);
     }
   };
+
+  if (isAModalOpen) {
+    return null;
+  }
 
   return (
     <div className="flex bg-gray-900 shadow-xl rounded-2xl overflow-hidden m-4">

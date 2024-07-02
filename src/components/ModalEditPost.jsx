@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
 import { API_URL } from "../config";
 import axios from "axios";
 
-const ModalEditPost = ({ isOpen, onClose, onSave, postId }) => {
+const ModalEditPost = ({ isOpen, onClose, postId }) => {
   const [postTitle, setPostTitle] = useState("");
   const [postDescription, setPostDescription] = useState("");
   const [postType, setPostType] = useState("");
@@ -67,10 +67,9 @@ const ModalEditPost = ({ isOpen, onClose, onSave, postId }) => {
   };
 
   const handleRemoveImage = (index) => {
-    // Log starea curentă înainte de a face schimbări
     console.log("Current images:", images);
     console.log("Current imagesAsFiles:", imagesAsFiles);
-    // Filtrează imaginile și fișierele
+
     const indexForFile = index - initialImages.length;
 
     const updatedImages = images.filter((img, i) => i !== index);
@@ -78,30 +77,51 @@ const ModalEditPost = ({ isOpen, onClose, onSave, postId }) => {
       (file, i) => i !== indexForFile
     );
 
-    // Log starea actualizată
     console.log("Updated images after removing:", updatedImages);
     console.log("Updated files after removing:", updatedImagesAsFiles);
 
-    // Actualizează starea într-o manieră imutabilă
     setImages([...updatedImages]);
     setImagesAsFiles([...updatedImagesAsFiles]);
   };
 
-  const handleSavePost = () => {
-    onSave({
-      title: postTitle,
-      description: postDescription,
-      type: postType,
-      constructionYear,
-      propertyType,
-      price,
-      numberOfRooms,
-      usefulSurface,
-      images,
-    });
-    onClose();
-  };
+  const handleSavePost = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      const postDetailsDTO = {
+        title: postTitle || "", // Set default values
+        description: postDescription || "",
+        price: parseFloat(price) || 0,
+        numberOfRooms: parseInt(numberOfRooms, 10) || 0,
+        usefulSurface: parseInt(usefulSurface, 10) || 0,
+        constructionYear: parseInt(constructionYear, 10) || 0,
+        type: postType || "",
+        propertyType: propertyType || "",
+      };
 
+      console.log(postDetailsDTO);
+
+      const formData = new FormData();
+      formData.append(
+        "postDetails",
+        new Blob([JSON.stringify(postDetailsDTO)], { type: "application/json" })
+      );
+
+      if (imagesAsFiles.length > 0) {
+        imagesAsFiles.forEach((file, i) => {
+          formData.append(`postPhotos`, file);
+        });
+      }
+
+      await axios.put(`${API_URL}/api/users/posts/${postId}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    } catch (error) {
+      console.error("Error saving post", error);
+    }
+  };
   return (
     <div
       className={`fixed top-0 left-0 w-full h-full flex items-center justify-center ${

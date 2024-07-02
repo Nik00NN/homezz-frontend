@@ -23,7 +23,7 @@ const Home = () => {
         </div>
         {isAuthenticated ? (
           <h1 className="text-xl font-medium  text-teal-400 justify-center ml-auto ">
-            Welcome,{username}!
+            Welcome, {username}!
           </h1>
         ) : (
           ""

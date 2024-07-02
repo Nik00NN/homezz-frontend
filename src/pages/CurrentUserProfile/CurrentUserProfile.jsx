@@ -325,18 +325,26 @@ const CurrentUserProfile = () => {
                   key={post.id}
                   className="bg-gray-700 p-4 rounded-lg shadow-md relative"
                 >
-                  <button
-                    onClick={() => handleEditPostClick(post.id)}
-                    className="absolute top-10 right-20 bg-green-600 text-white pb-1 pt-1 pl-2 pr-2 rounded-md "
-                  >
-                    <AiOutlineEdit size={28}></AiOutlineEdit>
-                  </button>
-                  <button
-                    onClick={() => handleDeletePost(post.id)}
-                    className="absolute top-10 right-10 bg-red-800 text-white pb-1 pl-3 pr-3 rounded-md text-2xl"
-                  >
-                    X
-                  </button>
+                  {idPostToEdit !== null ? (
+                    ""
+                  ) : (
+                    <>
+                      {" "}
+                      <button
+                        onClick={() => handleEditPostClick(post.id)}
+                        className="absolute top-10 right-20 bg-green-600 text-white pb-1 pt-1 pl-2 pr-2 rounded-md "
+                      >
+                        <AiOutlineEdit size={28}></AiOutlineEdit>
+                      </button>
+                      <button
+                        onClick={() => handleDeletePost(post.id)}
+                        className="absolute top-10 right-10 bg-red-800 text-white pb-1 pl-3 pr-3 rounded-md text-2xl"
+                      >
+                        X
+                      </button>
+                    </>
+                  )}
+
                   <Post
                     postId={post.id}
                     title={post.title}
@@ -348,6 +356,7 @@ const CurrentUserProfile = () => {
                     numberOfRooms={post.numberOfRooms}
                     usefulSurface={post.usefulSurface}
                     username={username}
+                    isAModalOpen={idPostToEdit !== null}
                   />
                 </div>
               ))
