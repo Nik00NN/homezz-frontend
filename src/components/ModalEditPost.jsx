@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FaTimes } from "react-icons/fa";
 import { API_URL } from "../config";
 import axios from "axios";
@@ -13,6 +13,8 @@ const ModalEditPost = ({ isOpen, onClose, onSave, postId }) => {
   const [numberOfRooms, setNumberOfRooms] = useState(0);
   const [usefulSurface, setUsefulSurface] = useState(0);
   const [images, setImages] = useState([]);
+  const [initialImages, setInitialImages] = useState([]);
+  const [imagesAsFiles, setImagesAsFiles] = useState([]);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -33,13 +35,12 @@ const ModalEditPost = ({ isOpen, onClose, onSave, postId }) => {
           setPropertyType(response.data.propertyType);
           setPrice(response.data.price);
           setImages(response.data.photos);
+          setInitialImages(response.data.photos);
         } catch (error) {
           console.error("Error fetching profile image", error);
         }
       }
     };
-    console.log(isOpen);
-    console.log(postId);
     fetchPost();
   }, [isOpen, postId]);
 
@@ -47,17 +48,43 @@ const ModalEditPost = ({ isOpen, onClose, onSave, postId }) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
+
       reader.onloadend = () => {
-        setImages([...images, reader.result]);
-        console.log(reader.result);
+        setImages((prevImages) => {
+          const updatedImages = [...prevImages, reader.result];
+          console.log("Updated images after adding:", updatedImages);
+          return updatedImages;
+        });
       };
       reader.readAsDataURL(file);
     }
+
+    setImagesAsFiles((prevFiles) => {
+      const updatedFiles = [...prevFiles, file];
+      console.log("Updated files after adding:", updatedFiles);
+      return updatedFiles;
+    });
   };
 
   const handleRemoveImage = (index) => {
+    // Log starea curentă înainte de a face schimbări
+    console.log("Current images:", images);
+    console.log("Current imagesAsFiles:", imagesAsFiles);
+    // Filtrează imaginile și fișierele
+    const indexForFile = index - initialImages.length;
+
     const updatedImages = images.filter((img, i) => i !== index);
-    setImages(updatedImages);
+    const updatedImagesAsFiles = imagesAsFiles.filter(
+      (file, i) => i !== indexForFile
+    );
+
+    // Log starea actualizată
+    console.log("Updated images after removing:", updatedImages);
+    console.log("Updated files after removing:", updatedImagesAsFiles);
+
+    // Actualizează starea într-o manieră imutabilă
+    setImages([...updatedImages]);
+    setImagesAsFiles([...updatedImagesAsFiles]);
   };
 
   const handleSavePost = () => {
@@ -105,12 +132,16 @@ const ModalEditPost = ({ isOpen, onClose, onSave, postId }) => {
                   alt={`Image ${index + 1}`}
                   className="w-full h-full object-cover rounded-md"
                 />
-                <button
-                  onClick={() => handleRemoveImage(index)}
-                  className="absolute top-0 right-0 bg-red-600 text-white p-1 rounded-full"
-                >
-                  <FaTimes size={16} />
-                </button>
+                {typeof image === "string" ? (
+                  <button
+                    onClick={() => handleRemoveImage(index)}
+                    className="absolute top-0 right-0 bg-red-600 text-white p-1 rounded-full"
+                  >
+                    <FaTimes size={16} />
+                  </button>
+                ) : (
+                  ""
+                )}
               </div>
             ))}
             <label
