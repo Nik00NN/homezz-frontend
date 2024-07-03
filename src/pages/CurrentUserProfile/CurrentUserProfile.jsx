@@ -19,6 +19,9 @@ const CurrentUserProfile = () => {
   const [idPostToDelete, setIdPostToDelete] = useState(null);
   const [idPostToEdit, setIdPostToEdit] = useState(null);
   const [errors, setErrors] = useState({});
+
+  const [isPostEdited, setIsPostEdited] = useState(false);
+
   const username = localStorage.getItem("username");
   const token = localStorage.getItem("accessToken");
 
@@ -77,7 +80,7 @@ const CurrentUserProfile = () => {
       }
     };
     fetchPosts();
-  }, [username, token]);
+  }, [username, token, isPostEdited]);
 
   const validateFields = () => {
     const newErrors = {};
@@ -197,6 +200,11 @@ const CurrentUserProfile = () => {
       </div>
     );
   }
+
+  const handleEditPostSuccess = () => {
+    setIdPostToEdit(null);
+    setIsPostEdited(true);
+  };
 
   return (
     <div className="min-h-screen w-full bg-gray-800 p-6 flex flex-col items-center">
@@ -375,6 +383,7 @@ const CurrentUserProfile = () => {
         isOpen={idPostToEdit !== null}
         postId={idPostToEdit}
         onClose={handleCloseEditPostModal}
+        onSucces={handleEditPostSuccess}
       />
     </div>
   );

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { register } from "../../services/authenticationService";
 import Toast from "../../components/Toast";
+import { NavLink } from "react-router-dom";
 
 const SignUp = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -12,6 +13,7 @@ const SignUp = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [file, setFile] = useState();
   const [toastVisible, setToastVisible] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
 
   const handleProfilePhotoChange = (e) => {
     setFile(e.target.files[0]);
@@ -77,6 +79,7 @@ const SignUp = () => {
       setToastVisible(true);
       setTimeout(() => setToastVisible(false), 3000);
       setErrorMessage("");
+      setIsRegistered(true);
     } catch (error) {
       setErrorMessage("Registration failed. Please try again.");
     }
@@ -175,12 +178,20 @@ const SignUp = () => {
             />
           </div>
           <p className="text-sm font-thin text-red-500">{errorMessage}</p>
-          <button
-            type="submit"
-            className="w-full text-lg py-2 px-4 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-75"
-          >
-            Register
-          </button>
+          {isRegistered ? (
+            <NavLink to="/sign-in">
+              <button className="w-full text-lg py-2 px-4 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-75">
+                &larr; Go back to login
+              </button>
+            </NavLink>
+          ) : (
+            <button
+              type="submit"
+              className="w-full text-lg py-2 px-4 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-75"
+            >
+              Register
+            </button>
+          )}
         </form>
       </div>
       <Toast

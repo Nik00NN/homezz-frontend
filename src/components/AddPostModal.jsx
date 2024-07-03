@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { API_URL } from "../config";
+import { useNavigate } from "react-router-dom";
 
 const AddPostModal = ({ isOpen, onClose, onSave }) => {
   const [title, setTitle] = useState("");
@@ -56,12 +57,12 @@ const AddPostModal = ({ isOpen, onClose, onSave }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        onSave(data);
-        onClose();
+        console.log(data)
       })
       .catch((error) => {
         console.error("Error:", error);
       });
+      onSave();
   };
 
   const handlePhotoChange = (event) => {

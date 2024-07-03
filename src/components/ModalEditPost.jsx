@@ -3,7 +3,7 @@ import { FaTimes } from "react-icons/fa";
 import { API_URL } from "../config";
 import axios from "axios";
 
-const ModalEditPost = ({ isOpen, onClose, postId }) => {
+const ModalEditPost = ({ isOpen, onClose, postId, onSucces }) => {
   const [postTitle, setPostTitle] = useState("");
   const [postDescription, setPostDescription] = useState("");
   const [postType, setPostType] = useState("");
@@ -121,6 +121,7 @@ const ModalEditPost = ({ isOpen, onClose, postId }) => {
     } catch (error) {
       console.error("Error saving post", error);
     }
+    onSucces();
   };
   return (
     <div

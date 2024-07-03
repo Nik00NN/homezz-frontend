@@ -10,6 +10,7 @@ import PostPage from "./pages/PostPage/PostPage.jsx";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword.jsx";
 import CurrentUserProfile from "./pages/CurrentUserProfile/CurrentUserProfile.jsx";
 import GeneralUserProfile from "./pages/GeneralUserProfile.jsx";
+import ChangePassword from "./pages/ChangePassword/ChangePassword.jsx";
 
 function App() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -50,6 +51,7 @@ function App() {
           path="/all-posts/:username/view-profile/:postId/view-post"
           element={<PostPage />}
         />
+        <Route path="/change-password" element={<ChangePassword />} />
       </Routes>
     </BrowserRouter>
   );

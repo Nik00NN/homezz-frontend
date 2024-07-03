@@ -3,7 +3,7 @@ import Navbar from "../../components/Navbar.jsx";
 import { AuthContext } from "../../context/AuthContext.jsx";
 import { AiOutlinePlus } from "react-icons/ai";
 import FilterSortBar from "../../components/FilterSortBar.jsx";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import AddPostModal from "../../components/AddPostModal.jsx";
 import { getAllPosts } from "../../services/postService.js";
 import Post from "../../components/Post";
@@ -24,6 +24,8 @@ const Main = () => {
     postType: "",
   });
 
+  const navigator = useNavigate();
+
   useEffect(() => {
     setUsername(localStorage.getItem("username"));
   }, []);
@@ -43,7 +45,7 @@ const Main = () => {
     };
 
     fetchPosts();
-  }, [page, size, filters]);
+  }, [page, size, filters, isModalOpen]);
 
   const handleAddPost = () => {
     setIsModalOpen(true);
@@ -64,6 +66,10 @@ const Main = () => {
   const handleSortChange = (value) => {
     setSort(value);
     applySort(value);
+  };
+
+  const handleSaveAddedPost = () => {
+    setIsModalOpen(false);
   };
 
   const handleFilterChange = (newFilters) => {
@@ -127,7 +133,12 @@ const Main = () => {
         ) : (
           <div className="flex flex-col gap-4">
             {posts.map((post) => (
-              <Post key={post.id} postId={post.id} isAModalOpen={isModalOpen} {...post} />
+              <Post
+                key={post.id}
+                postId={post.id}
+                isAModalOpen={isModalOpen}
+                {...post}
+              />
             ))}
           </div>
         )}
@@ -159,7 +170,7 @@ const Main = () => {
       <AddPostModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
-        onSave={() => console.log("onsave")}
+        onSave={handleSaveAddedPost}
       />
     </div>
   );
